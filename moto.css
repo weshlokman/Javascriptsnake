@@ -1,0 +1,27 @@
+header {
+    overflow: hidden; 
+    text-align: center;
+}
+
+#spanPoints {
+    background: #222;
+    color: #fff;
+    display: inline-block;
+    /* float:left;  remove */
+    margin: 10px 10px 0 0;
+    padding: 5px 10px
+}
+
+#gameMenu {
+    overflow: hidden; 
+    text-align: center;
+}
+
+#canvasContainer {
+    width: 100%;
+    text-align:center;
+ }
+ 
+ #myCanvas {
+    display: inline;
+ }
