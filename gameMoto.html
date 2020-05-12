@@ -2,15 +2,19 @@
 <header>
 <h1 id="title">Tron Light Cycles (Motocyclettes de lumi&egrave;re de Tron)</h1>
 <link rel="stylesheet" type="text/css" href="moto.css">
-<script src="moto.js"></script>
 </header>
 <body>
-
+   
 <div id='gameMenu'>
    <span id="spanPoints">Game Points: </span>
 </div>
 <div id="canvasContainer">
 <canvas id="myCanvas" width="700" height="700" style="border:2px solid #000000;"></canvas>
+</div>
+<div id ='gameMenu'>
+   <button id="continueButton" onclick="continueButtonHandler()">Continue</button>
+   <button id="pauseButton" onclick="pauseButtonHandler()">Pause</button>
+   <button id="restartButton" onclick="restartButtonHandler()">Restart</button>
 </div>
 
 <script src="moto.js"></script>

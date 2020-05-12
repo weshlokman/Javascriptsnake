@@ -127,7 +127,70 @@
         
         document.onkeydown = keyDownHandler;
 
+        //Ajout des EventListener pour la souris
+        canvas.addEventListener("mousedown", mouseDown);
+        canvas.addEventListener("mouseup", mouseUp);
+
+        //Coordonées de la souris clique down et up
+        var pX0 = 0;
+        var pY0 = 0;
+        var pX1 = 0;
+        var pY1 = 0;
+
+        function mouseDown (e) {
+            console.log("mouseDown event");
+            pX0 = e.offsetX;
+            pY0 = e.offsetY;
+            console.log(pX0+","+pY0);
+            
+        }
+
+        function mouseUp (e) {
+            console.log("mouseUp event");
+            pX1 = e.offsetX;
+            pY1 = e.offsetY;
+            console.log(pX1+","+pY1 );
+
+        }
+
+        //Controle de la souris Partie 4
+        var mouseControl = function () {
+            
+            console.log("In mouse Control");
+            var deltaX = pX1 - pX0; 
+            var deltaY = pY1 - pY0;
+            console.log(deltaX);
+            //
+            //console.log("Les deltas"+ "("+ deltaX +","+ deltaX +")");
+            
+            if(Math.abs(deltaX) >  Math.abs(deltaY)) {
+                if(deltaX > 0 ) {
+                    lightCycle1_vy = 0;
+                    lightCycle1_vx = 1;
+                }else {
+                    //
+                    lightCycle1_vy = 0;
+                    lightCycle1_vx = -1;
+                }
+                
+            } else if (deltaY > 0) {
+                //Geste vers le bas
+                lightCycle1_vx = 0;
+                lightCycle1_vy = 1;
+            } else {
+                //Geste vers le haut
+                lightCycle1_vx = 0;
+                lightCycle1_vy = -1;
+            }
+
+            //console.log("deltaX:" + deltaX + "deltaY:" + deltaY);
+
+            
+
+        }
+
         var redraw = function() {
+            //mouseControl();
             C1.fillStyle = "#000000";
             // C1.clearRect(0, 0, canvas.width, canvas.height);
             C1.fillRect(0,0,canvas.width,canvas.height);
@@ -144,18 +207,42 @@
             C2.fillStyle = lightCycle2_alive ? "#ff0000" : "#FFFFFF";
             C2.fillRect( x0+lightCycle2_x*cellSize, y0+lightCycle2_y*cellSize, cellSize, cellSize );
         
+          /*  if(endGame){
+                clearInterval(refreshIntervalId);
+                endGame = false;
+                //ici dans le onclick recommencer
+                //addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
+
+                
+            }*/
+        
+        }
+
+        //Pour contrôler l'état du jeu
+        var gameState;
+
+        //Pour continuer le jeu 
+        function continueButtonHandler(){
+            console.log("DANS le buton continue")
+
+        }
+        //Pour mettre le jeu sur Pause
+        function pauseButtonHandler() {
+            console.log("DANS le buton pause");
+        }
+
+        function restartButtonHandler() {
             if(endGame){
                 clearInterval(refreshIntervalId);
                 endGame = false;
                 //ici dans le onclick recommencer
-                addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
-
+                //addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
+                restartGame();
                 
             }
-        
         }
         var advance1 = function() {
-        
+         
             if ( lightCycle1_alive) {
                 var new1_x = lightCycle1_x + lightCycle1_vx;
                 var new1_y = lightCycle1_y + lightCycle1_vy;
@@ -171,7 +258,9 @@
                     lightCycle1_x = new1_x;
                     lightCycle1_y = new1_y;
                 }
+                mouseControl();
                 redraw();
+            
             }
         
         
