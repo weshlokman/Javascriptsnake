@@ -150,7 +150,9 @@
             pX1 = e.offsetX;
             pY1 = e.offsetY;
             console.log(pX1+","+pY1 );
-
+            
+            //Appel la fonction mouseControl après avoir recu la position initial et final
+            mouseControl();
         }
 
         //Controle de la souris Partie 4
@@ -183,11 +185,11 @@
                 lightCycle1_vy = -1;
             }
 
-            //console.log("deltaX:" + deltaX + "deltaY:" + deltaY);
-
-            
+            //console.log("deltaX:" + deltaX + "deltaY:" + deltaY); 
 
         }
+
+        
 
         var redraw = function() {
             //mouseControl();
@@ -222,7 +224,7 @@
         var gameState;
 
         //Pour continuer le jeu 
-        function continueButtonHandler(){
+        document.getElementById("continueButtonHandler") =function continueButtonHandler(){
             console.log("DANS le buton continue")
 
         }
@@ -241,6 +243,7 @@
                 
             }
         }
+
         var advance1 = function() {
          
             if ( lightCycle1_alive) {
@@ -258,7 +261,7 @@
                     lightCycle1_x = new1_x;
                     lightCycle1_y = new1_y;
                 }
-                mouseControl();
+               
                 redraw();
             
             }
