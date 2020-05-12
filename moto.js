@@ -224,7 +224,7 @@
         var gameState;
 
         //Pour continuer le jeu 
-        document.getElementById("continueButtonHandler") =function continueButtonHandler(){
+        function continueButtonHandler(){
             console.log("DANS le buton continue")
 
         }
