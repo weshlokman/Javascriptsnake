@@ -25,3 +25,16 @@ header {
  #myCanvas {
     display: inline;
  }
+ p,
+label {
+    
+    font: 1rem 'Fira Sans', sans-serif;
+}
+
+input {
+    margin: .4rem;
+}
+#colorMenu {
+    overflow: hidden; 
+    text-align: center;
+}
