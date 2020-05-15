@@ -4,15 +4,7 @@
     // ***domElement : element du Dome quon veut hide
     // ***HideOrclear : on veut le hide = true on ne veut pas = false
     //src w3schools.com/howto/howto_js_toggle_hide_show.asp
-    function hideOrClearElement(domElement, HideOrClear){
-        var elem = document.getElementById(domElement);
-        if (HideOrClear) {
-            elem.style.display = "none";
-        }
-        else {
-          elem.style.display = "block";
-        }
-    }
+    
         //fonction qui ajoute au Dom des éléments
     // ***elementid : le id de l'element du dom
     // ***element qu'on veux ajouter au Dom exemple : '<button id="resetButton" onclick="restartGame()">Restart</button>'
@@ -26,10 +18,13 @@
     
     //recommence le game et elle hide le button restart
     function restartGame(){
-       // hideOrClearElement("resetButton", true);
+
+            clearInterval(refreshIntervalId);
+            endGame = false;
         game();
     }
- 
+    
+    var refreshIntervalId;
 
     //permet de start le game 
     function game(){
@@ -275,6 +270,7 @@
             }*/
         }
 
+        
         var advance1 = function() {
          
             if ( lightCycle1_alive) {
@@ -324,8 +320,9 @@
 
 
         
-        var refreshIntervalId = setInterval( function() { 
+        refreshIntervalId = setInterval( function() { 
             advance1();
             advance2();
         }, 100 /*milliseconds*/ );
     }
+   
