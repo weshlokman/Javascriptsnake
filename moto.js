@@ -11,6 +11,8 @@
     var refreshIntervalId;
     //game
     var gameNumber
+    //time for the speed
+    var time =100;
 
 
     //input color setup
@@ -117,6 +119,7 @@
     
     var refreshIntervalId;
 
+
     //permet de start le game 
     function game(){
         // Creates a 2D array filled with zeros
@@ -185,7 +188,7 @@
         function keyDownHandler(e) {
             // console.log("keyCode: " + e.keyCode );
             // e = e || window.event;
-        
+            setTimeout(function(){ console.log("Hello"); }, 1000);
             // light cycle 1
             if (e.keyCode === 38) { // up arrow
                 lightCycle1_vx = 0;
@@ -236,6 +239,7 @@
         var pY1 = 0;
 
         function mouseDown (e) {
+            setTimeout(function(){ time -= 10; }, 1000);
             console.log("mouseDown event");
             pX0 = e.offsetX;
             pY0 = e.offsetY;
@@ -314,6 +318,7 @@
             if(endGame){
                 clearInterval(refreshIntervalId);
                 endGame = false;
+                refreshIntervalId = null;
                 gameNumber++;
                 //ici dans le onclick recommencer
                 //addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
@@ -329,7 +334,7 @@
 
         //Pour continuer le jeu 
         document.getElementById('continueButton').onclick = function continueButtonHandler(){
-
+            startInterval();
             /*
             if(gamePaused) {
                 gamePaused = false;
@@ -344,14 +349,7 @@
         //Pour mettre le jeu sur Pause
         document.getElementById('pauseButton').onclick =  function pauseButtonHandler() {
 
-            /*
-            if(!gamePaused) {
-                gamePaused = true;
-                /**
-                 * to-do
-                 */
-
-            //}
+            clearInterval(refreshIntervalId);
 
             console.log("DANS le buton pause");
         }
@@ -369,6 +367,7 @@
                 
             }*/
         }
+        setTimeout(function(){ console.log("Hello"); }, 3000);
 
      
         
@@ -418,10 +417,18 @@
             }
         }
 
-
         
+
+         
+      function startInterval(){  
         refreshIntervalId = setInterval( function() { 
             advance();
-        }, 100 /*milliseconds*/ );
+            console.log("running")
+        }, time );
+      }
+
+      startInterval();
     }
+
+    
 
