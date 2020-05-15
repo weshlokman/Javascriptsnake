@@ -7,6 +7,8 @@
     var tail1Color;
     //couleur de moto1`
     var tail2Color;
+    //time
+    var refreshIntervalId;
 
 
     //input color setup
@@ -27,6 +29,15 @@
             tail2Color = event.target.value;
         }
     }
+
+    function restartGame(){
+        //hideOrClearElement("resetButton", true);
+        clearInterval(refreshIntervalId);
+        endGame = false;
+        game();
+    }
+
+ function game(){
     var create2DArray = function( numColumns, numRows ) {
         var array = [];
         for ( var c = 0; c < numColumns; c++ ) {
@@ -196,10 +207,6 @@
         document.getElementById(elementId).innerHTML += domElement; 
     }
     //recommence le game et elle hide le button restart
-    function restartGame(){
-        hideOrClearElement("resetButton", true);
-        game();
-    }
    
     function keyDownHandler(e) {
             // console.log("keyCode: " + e.keyCode );
@@ -289,13 +296,11 @@
                 draw();
             }
         }
-        
-        
-
-    function game(){
-        var refreshIntervalId = setInterval( function() { 
+    
+        refreshIntervalId = setInterval( function() { 
             advance1();
         }, 100 /*milliseconds*/ );
     }
     game();
+    
     
