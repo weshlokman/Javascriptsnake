@@ -1,5 +1,36 @@
-    //commence la partie 
-    game();
+    //quand le window load 
+    window.addEventListener("load", startup, false);
+    
+    //default color 
+    var defaultColor = "#FFFFFF";
+    //couleur de moto1`
+    var tail1Color;
+    //couleur de moto1`
+    var tail2Color;
+    //time
+    var refreshIntervalId;
+
+
+    //input color setup
+    function startup(){
+        color1Input = document.getElementById("inputColor1");
+        color2Input = document.getElementById("inputColor2");
+        tail1Color = defaultColor;
+        tail2Color = defaultColor;
+        color1Input.addEventListener("change", updateFirst, false);
+        color2Input.addEventListener("change", updateFirst, false);
+    }
+
+    function updateFirst(event){
+        if(event.target.id === "inputColor1"){
+            tail1Color = event.target.value;
+        }
+        else{
+            tail2Color = event.target.value;
+        }
+    }
+
+
     //fonction qui permet de hide un element et elle permet aussi de le rendre clear
     // ***domElement : element du Dome quon veut hide
     // ***HideOrclear : on veut le hide = true on ne veut pas = false
@@ -276,9 +307,13 @@
             if ( lightCycle1_alive) {
                 var new1_x = lightCycle1_x + lightCycle1_vx;
                 var new1_y = lightCycle1_y + lightCycle1_vy;
+
+                var new2_x = lightCycle2_x + lightCycle2_vx;
+		        var new2_y = lightCycle2_y + lightCycle2_vy;
                 // Check for collision with grid boundaries and with trail
                 if (
-                    new1_x < 0 || new1_x >= NUM_CELLS_HORIZONTAL || new1_y < 0 || new1_y >= NUM_CELLS_VERTICAL|| grid[new1_x][new1_y] === CELL_OCCUPIED
+                    new1_x < 0 || new1_x >= NUM_CELLS_HORIZONTAL || new1_y < 0 || new1_y >= NUM_CELLS_VERTICAL
+                    || grid[new1_x][new1_y] === CELL_OCCUPIED1 || grid[new2_x][new2_y] === CELL_OCCUPIED2
                 ) {
                     lightCycle1_alive = false;
                     endGame = true;
@@ -306,15 +341,24 @@
                 if (
                     new2_x < 0 || new2_x >= NUM_CELLS_HORIZONTAL || new2_y < 0 || new2_y >= NUM_CELLS_VERTICAL|| grid[new2_x][new2_y] === CELL_OCCUPIED
                 ) {
-                    lightCycle2_alive = false;
-                    endGame = true;
+                    lightCycle2_alive = false
+                    console.log("2"+lightCycle2_alive);
+        
                 }
+        
                 else {
-                    grid[new2_x][new2_y] = CELL_OCCUPIED;
+                    //Position occuper moto 1
+                    grid[new1_x][new1_y] = CELL_OCCUPIED1;
+                    //Position occuper moto 2
+                    grid[new2_x][new2_y] = CELL_OCCUPIED2;
+                    //Nouvelle position moto 1
+                    lightCycle1_x = new1_x;
+                    lightCycle1_y = new1_y;
+                    //Nouvelle position moto 2
                     lightCycle2_x = new2_x;
                     lightCycle2_y = new2_y;
                 }
-                redraw();
+                draw();
             }
         }
 
@@ -322,7 +366,6 @@
         
         refreshIntervalId = setInterval( function() { 
             advance1();
-            advance2();
         }, 100 /*milliseconds*/ );
     }
-   
+
