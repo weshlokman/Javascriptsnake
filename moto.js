@@ -221,15 +221,30 @@
         }
 
         //Pour contrôler l'état du jeu
-        var gameState;
+        var gamePaused = false;
 
         //Pour continuer le jeu 
         function continueButtonHandler(){
+
+            if(gamePaused) {
+                gamePaused = false;
+                /**
+                 * to-do
+                 */
+            }
             console.log("DANS le buton continue")
 
         }
         //Pour mettre le jeu sur Pause
         function pauseButtonHandler() {
+            if(!gamePaused) {
+                gamePaused = true;
+                /**
+                 * to-do
+                 */
+
+            }
+
             console.log("DANS le buton pause");
         }
 
@@ -238,7 +253,7 @@
                 clearInterval(refreshIntervalId);
                 endGame = false;
                 //ici dans le onclick recommencer
-                //addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
+                addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
                 restartGame();
                 
             }
