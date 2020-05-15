@@ -302,8 +302,9 @@
 
         
         var advance1 = function() {
-         
-            if ( lightCycle1_alive) {
+        
+            if ( lightCycle1_alive && lightCycle2_alive) {
+
                 var new1_x = lightCycle1_x + lightCycle1_vx;
                 var new1_y = lightCycle1_y + lightCycle1_vy;
 
@@ -317,28 +318,12 @@
                     lightCycle1_alive = false;
                     endGame = true;
                 }
-                else {
-                    grid[new1_x][new1_y] = CELL_OCCUPIED;
-                    lightCycle1_x = new1_x;
-                    lightCycle1_y = new1_y;
-                }
-               
-                redraw();
-            
-            }
-        
-        
-        }
-        
-        var advance2 = function() {
-        
-            if ( lightCycle2_alive) {
-                var new2_x = lightCycle2_x + lightCycle2_vx;
-                var new2_y = lightCycle2_y + lightCycle2_vy;
-        
-                // Check for collision with grid boundaries and with trail
-                if (
-                    new2_x < 0 || new2_x >= NUM_CELLS_HORIZONTAL || new2_y < 0 || new2_y >= NUM_CELLS_VERTICAL|| grid[new2_x][new2_y] === CELL_OCCUPIED
+                else if (
+                    new2_x < 0 || new2_x >= NUM_CELLS_HORIZONTAL
+                    || new2_y < 0 || new2_y >= NUM_CELLS_VERTICAL
+                    || grid[new2_x][new2_y] === CELL_OCCUPIED2
+                    || grid[new2_x][new2_y] === CELL_OCCUPIED1
+
                 ) {
                     lightCycle2_alive = false
                     console.log("2"+lightCycle2_alive);
