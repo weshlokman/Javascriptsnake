@@ -88,7 +88,7 @@
         var lightCycle2_alive = true;
         var lightCycle2_sc = 0;
 
-        
+
         var endGame = false;
         
         grid[lightCycle2_x][lightCycle2_y] = CELL_OCCUPIED; // to mark the initial grid cell as occupied
@@ -321,6 +321,9 @@
                 redraw();
             }
         }
+
+
+        
         var refreshIntervalId = setInterval( function() { 
             advance1();
             advance2();
