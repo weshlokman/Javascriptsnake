@@ -49,7 +49,6 @@
     
     //recommence le game et elle hide le button restart
     function restartGame(){
-
             clearInterval(refreshIntervalId);
             endGame = false;
         game();
