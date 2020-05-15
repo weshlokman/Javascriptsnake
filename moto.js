@@ -16,12 +16,17 @@
         //fonction qui ajoute au Dom des éléments
     // ***elementid : le id de l'element du dom
     // ***element qu'on veux ajouter au Dom exemple : '<button id="resetButton" onclick="restartGame()">Restart</button>'
-    function addToDom(elementId, domElement ){
+    
+    /*function addToDom(elementId, domElement ){
         document.getElementById(elementId).innerHTML += domElement; 
-    }
+    }*/
+
+    //addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
+    
+    
     //recommence le game et elle hide le button restart
     function restartGame(){
-        hideOrClearElement("resetButton", true);
+       // hideOrClearElement("resetButton", true);
         game();
     }
  
@@ -71,6 +76,7 @@
         var lightCycle1_vx = 0; // positive for right
         var lightCycle1_vy = -1; // positive for down
         var lightCycle1_alive = true;
+        var lightCycle1_sc = 0;
         
         grid[lightCycle1_x][lightCycle1_y] = CELL_OCCUPIED; // to mark the initial grid cell as occupied
         
@@ -80,6 +86,9 @@
         var lightCycle2_vx = 0; // positive for right
         var lightCycle2_vy = 1; // positive for down
         var lightCycle2_alive = true;
+        var lightCycle2_sc = 0;
+
+        
         var endGame = false;
         
         grid[lightCycle2_x][lightCycle2_y] = CELL_OCCUPIED; // to mark the initial grid cell as occupied
@@ -209,14 +218,14 @@
             C2.fillStyle = lightCycle2_alive ? "#ff0000" : "#FFFFFF";
             C2.fillRect( x0+lightCycle2_x*cellSize, y0+lightCycle2_y*cellSize, cellSize, cellSize );
         
-          /*  if(endGame){
+            if(endGame){
                 clearInterval(refreshIntervalId);
                 endGame = false;
                 //ici dans le onclick recommencer
                 //addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
 
                 
-            }*/
+            }
         
         }
 
@@ -224,39 +233,46 @@
         var gamePaused = false;
 
         //Pour continuer le jeu 
-        function continueButtonHandler(){
+        document.getElementById('continueButton').onclick = function continueButtonHandler(){
 
+            /*
             if(gamePaused) {
                 gamePaused = false;
                 /**
                  * to-do
                  */
-            }
+           // }
+            
             console.log("DANS le buton continue")
 
         }
         //Pour mettre le jeu sur Pause
-        function pauseButtonHandler() {
+        document.getElementById('pauseButton').onclick =  function pauseButtonHandler() {
+
+            /*
             if(!gamePaused) {
                 gamePaused = true;
                 /**
                  * to-do
                  */
 
-            }
+            //}
 
             console.log("DANS le buton pause");
         }
 
-        function restartButtonHandler() {
-            if(endGame){
+        document.getElementById('restartButton').onclick = function restartButtonHandler() {
+
+            restartGame();
+            console.log("Dans le boutton restart");
+           /*  if(endGame){
                 clearInterval(refreshIntervalId);
                 endGame = false;
                 //ici dans le onclick recommencer
-                addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
+                //addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
                 restartGame();
                 
-            }
+            }*/
         }
 
         var advance1 = function() {
