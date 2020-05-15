@@ -20,6 +20,65 @@
         color1Input.addEventListener("change", updateFirst, false);
         color2Input.addEventListener("change", updateFirst, false);
     }
+    setUpGame();
+
+            //fonction qui permet de hide un element et elle permet aussi de le rendre clear
+    // ***domElement : element du Dome quon veut hide
+    // ***HideOrclear : on veut le hide = true on ne veut pas = false
+    //src w3schools.com/howto/howto_js_toggle_hide_show.asp
+    function hideOrClearElement(domElement, HideOrClear){
+        var elem = document.getElementById(domElement);
+        if (HideOrClear) {
+            elem.style.display = "none";
+        }
+        else {
+          elem.style.display = "block";
+        }
+    }
+
+            //fonction qui ajoute au Dom des éléments
+    // ***elementid : le id de l'element du dom
+    // ***element qu'on veux ajouter au Dom exemple : '<button id="resetButton" onclick="restartGame()">Restart</button>'
+    function addToDom(elementId, domElement ){
+        document.getElementById(elementId).innerHTML += domElement; 
+    }
+
+    function setUpGame(){
+
+        hideOrClearElement("myCanvas", true);
+        hideOrClearElement("spanPoints", true);
+        hideOrClearElement("continueButton", true);
+        hideOrClearElement("pauseButton", true);
+        hideOrClearElement("restartButton", true);
+        addToDom("startButton", '<button id="startButton" onclick="startGame()" >Start</button>');
+
+    }
+
+   // document.getElementById('startButton').onclick = function () {
+      
+    function startGame(){
+        hideOrClearElement("myCanvas", false);
+        hideOrClearElement("spanPoints", false);
+        hideOrClearElement("continueButton", false);
+        hideOrClearElement("pauseButton", false);
+        hideOrClearElement("restartButton", false);
+        hideOrClearElement("startButton", true);
+        game();
+        
+    }
+
+
+
+    
+
+    function updateFirst(event){
+        if(event.target.id === "inputColor1"){
+            tail1Color = event.target.value;
+        }
+        else{
+            tail2Color = event.target.value;
+        }
+    }
 
     function updateFirst(event){
         if(event.target.id === "inputColor1"){
@@ -73,6 +132,7 @@
         
         //set le canva et prepare le object pour dessiner
         var canvas = document.getElementById("myCanvas");
+        var C = canvas.getContext("2d");
         var C1 = canvas.getContext("2d");
         var C2 = canvas.getContext("2d");
         var canvas_rectangle = canvas.getBoundingClientRect();
@@ -94,6 +154,8 @@
         var grid = create2DArray( NUM_CELLS_HORIZONTAL, NUM_CELLS_VERTICAL );
         var CELL_EMPTY = 0;
         var CELL_OCCUPIED = 1;
+        var CELL_OCCUPIED2 = 2;
+
         
         // Current position and direction of light cycle 1
         var lightCycle1_x = NUM_CELLS_HORIZONTAL / 2;
@@ -101,7 +163,7 @@
         var lightCycle1_vx = 0; // positive for right
         var lightCycle1_vy = -1; // positive for down
         var lightCycle1_alive = true;
-        var lightCycle1_sc = 0;
+        var lightCycle1_sc;
         
         grid[lightCycle1_x][lightCycle1_y] = CELL_OCCUPIED; // to mark the initial grid cell as occupied
         
@@ -111,7 +173,7 @@
         var lightCycle2_vx = 0; // positive for right
         var lightCycle2_vy = 1; // positive for down
         var lightCycle2_alive = true;
-        var lightCycle2_sc = 0;
+        var lightCycle2_sc;
 
 
         var endGame = false;
@@ -222,21 +284,25 @@
             //console.log("deltaX:" + deltaX + "deltaY:" + deltaY); 
 
         }
+    
 
-        
 
         var redraw = function() {
             //mouseControl();
-            C1.fillStyle = "#000000";
-            // C1.clearRect(0, 0, canvas.width, canvas.height);
-            C1.fillRect(0,0,canvas.width,canvas.height);
-            C1.fillStyle = "#00ffff";
+      
+            C.fillStyle = "#000000";
+            C.fillRect(0,0,canvas.width,canvas.height);
         
             for ( var i = 0; i < NUM_CELLS_HORIZONTAL; ++i ) {
                 for ( var j = 0; j < NUM_CELLS_VERTICAL; ++j ) {
-                    if ( grid[i][j] === CELL_OCCUPIED )
-                            C1.fillRect( x0+i*cellSize+1, y0+j*cellSize+1, cellSize-2, cellSize-2 );
-                }
+                    if ( grid[i][j] === CELL_OCCUPIED ){
+                        C1.fillStyle = tail1Color ;
+                        C1.fillRect( x0+i*cellSize+1, y0+j*cellSize+1, cellSize-2, cellSize-2 );
+                    }
+                    else if ( grid[i][j] === CELL_OCCUPIED ){
+                            C2.fillStyle = tail2Color;
+                            C2.fillRect( x0+i*cellSize+1, y0+j*cellSize+1, cellSize-2, cellSize-2 );
+                    }
             }
             C1.fillStyle = lightCycle1_alive ? "#ff0000" : "#FFFFFF";
             C1.fillRect( x0+lightCycle1_x*cellSize, y0+lightCycle1_y*cellSize, cellSize, cellSize );
@@ -252,7 +318,8 @@
                 
             }
         
-        }
+         } 
+        }  
 
         //Pour contrôler l'état du jeu
         var gamePaused = false;
@@ -300,30 +367,33 @@
             }*/
         }
 
+     
         
-        var advance1 = function() {
+        var advance = function() {
         
             if ( lightCycle1_alive && lightCycle2_alive) {
 
                 var new1_x = lightCycle1_x + lightCycle1_vx;
                 var new1_y = lightCycle1_y + lightCycle1_vy;
-
+        
                 var new2_x = lightCycle2_x + lightCycle2_vx;
-		        var new2_y = lightCycle2_y + lightCycle2_vy;
+                var new2_y = lightCycle2_y + lightCycle2_vy;
+        
                 // Check for collision with grid boundaries and with trail
                 if (
-                    new1_x < 0 || new1_x >= NUM_CELLS_HORIZONTAL || new1_y < 0 || new1_y >= NUM_CELLS_VERTICAL
-                    || grid[new1_x][new1_y] === CELL_OCCUPIED1 || grid[new2_x][new2_y] === CELL_OCCUPIED2
+                    new1_x < 0 || new1_x >= NUM_CELLS_HORIZONTAL
+                    || new1_y < 0 || new1_y >= NUM_CELLS_VERTICAL
+                    || grid[new1_x][new1_y] === CELL_OCCUPIED
+        
                 ) {
                     lightCycle1_alive = false;
-                    endGame = true;
+                    console.log(lightCycle1_alive);
                 }
+                
                 else if (
                     new2_x < 0 || new2_x >= NUM_CELLS_HORIZONTAL
                     || new2_y < 0 || new2_y >= NUM_CELLS_VERTICAL
-                    || grid[new2_x][new2_y] === CELL_OCCUPIED2
-                    || grid[new2_x][new2_y] === CELL_OCCUPIED1
-
+                    || grid[new2_x][new2_y] === CELL_OCCUPIED
                 ) {
                     lightCycle2_alive = false
                     console.log("2"+lightCycle2_alive);
@@ -332,9 +402,9 @@
         
                 else {
                     //Position occuper moto 1
-                    grid[new1_x][new1_y] = CELL_OCCUPIED1;
+                    grid[new1_x][new1_y] = CELL_OCCUPIED;
                     //Position occuper moto 2
-                    grid[new2_x][new2_y] = CELL_OCCUPIED2;
+                    grid[new2_x][new2_y] = CELL_OCCUPIED;
                     //Nouvelle position moto 1
                     lightCycle1_x = new1_x;
                     lightCycle1_y = new1_y;
@@ -342,14 +412,17 @@
                     lightCycle2_x = new2_x;
                     lightCycle2_y = new2_y;
                 }
-                draw();
+                
+                redraw();
+                    
+                
             }
         }
 
 
         
         refreshIntervalId = setInterval( function() { 
-            advance1();
+            advance();
         }, 100 /*milliseconds*/ );
     }
 
