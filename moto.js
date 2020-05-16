@@ -11,6 +11,8 @@
     var refreshIntervalId;
     //time for the speed
     var time =100;
+    //refresh rate
+    var refreshRate = 100;
 
 
     //game result
@@ -78,7 +80,10 @@
         
     }
 
-
+    //
+    function speedUp(){
+        refreshRate -= 5;
+    }
 
     
 
@@ -113,7 +118,7 @@
     function game(){
         //startInterval();
         // setTimer();
-        refreshGame(100);
+        refreshGame();
         //add to innerHtml 
         pointsSpan = document.getElementById("spanPoints");
         playerPointsSpan1 = document.getElementById("player1Points");
@@ -187,7 +192,7 @@
         function keyDownHandler(e) {
             // console.log("keyCode: " + e.keyCode );
             // e = e || window.event;
-            
+            speedUp();
             if (e.keyCode === 38) { // up arrow
                 lightCycle1_vx = 0;
                 lightCycle1_vy = -1;
@@ -242,7 +247,7 @@
             pX0 = e.offsetX;
             pY0 = e.offsetY;
             console.log(pX0+","+pY0);
-            
+            speedUp();
         }
 
         function mouseUp (e) {
@@ -431,7 +436,7 @@
       }
 
       // Refresh/advance game
-      function refreshGame(refreshRate) {
+      function refreshGame() {
         // To run the passed function every 100 milliseconds:
         setTimeout(function run() {
             advance();
