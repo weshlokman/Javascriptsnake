@@ -3,6 +3,23 @@ header {
     text-align: center;
 }
 
+#player1Points {
+    background: #222;
+    color: #fff;
+    /* float:left;  remove */
+    margin: 10px 10px 0 0;
+    padding: 5px 10px;
+    text-align: left;
+}
+#player2Points {
+    background: #222;
+    color: #fff;
+    /* float:left;  remove */
+    margin: 10px 10px 0 0;
+    padding: 5px 10px;
+    text-align: right;
+}
+
 #spanPoints {
     background: #222;
     color: #fff;
@@ -15,7 +32,10 @@ header {
     overflow: hidden; 
     text-align: center;
 }
-
+#pointsPlayerMenu {
+    overflow: hidden; 
+    text-align: center;
+}
 #gameMenu {
     overflow: hidden; 
     text-align: center;

@@ -9,10 +9,14 @@
     var tail2Color;
     //time
     var refreshIntervalId;
-    //game
-    var gameNumber
     //time for the speed
     var time =100;
+
+
+    //game result
+    var gameNumber = 0;
+    var player1Points = 0;
+    var player2Points = 0;
 
 
     //input color setup
@@ -48,9 +52,10 @@
     }
 
     function setUpGame(){
-
         hideOrClearElement("myCanvas", true);
         hideOrClearElement("spanPoints", true);
+        hideOrClearElement("player1Points", true);
+        hideOrClearElement("player2Points", true);
         hideOrClearElement("continueButton", true);
         hideOrClearElement("pauseButton", true);
         hideOrClearElement("restartButton", true);
@@ -63,6 +68,8 @@
     function startGame(){
         hideOrClearElement("myCanvas", false);
         hideOrClearElement("spanPoints", false);
+        hideOrClearElement("player1Points", false);
+        hideOrClearElement("player2Points", false);
         hideOrClearElement("continueButton", false);
         hideOrClearElement("pauseButton", false);
         hideOrClearElement("restartButton", false);
@@ -92,23 +99,6 @@
             tail2Color = event.target.value;
         }
     }
-
-
-    //fonction qui permet de hide un element et elle permet aussi de le rendre clear
-    // ***domElement : element du Dome quon veut hide
-    // ***HideOrclear : on veut le hide = true on ne veut pas = false
-    //src w3schools.com/howto/howto_js_toggle_hide_show.asp
-    
-        //fonction qui ajoute au Dom des éléments
-    // ***elementid : le id de l'element du dom
-    // ***element qu'on veux ajouter au Dom exemple : '<button id="resetButton" onclick="restartGame()">Restart</button>'
-    
-    /*function addToDom(elementId, domElement ){
-        document.getElementById(elementId).innerHTML += domElement; 
-    }*/
-
-    //addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
-    
     
     //recommence le game et elle hide le button restart
     function restartGame(){
@@ -117,11 +107,20 @@
             game();
     }
     
-    var refreshIntervalId;
 
 
     //permet de start le game 
     function game(){
+        //startInterval();
+        // setTimer();
+        refreshGame(100);
+        //add to innerHtml 
+        pointsSpan = document.getElementById("spanPoints");
+        playerPointsSpan1 = document.getElementById("player1Points");
+        playerPointsSpan2 = document.getElementById("player2Points");
+        pointsSpan.innerHTML = ("Game Number: " + gameNumber);
+        playerPointsSpan1.innerHTML = ("Player 1 Points: " + player1Points);
+        playerPointsSpan2.innerHTML = ("Player 2 Points: " + player2Points);
         // Creates a 2D array filled with zeros
         var create2DArray = function( numColumns, numRows ) {
             var array = [];
@@ -188,8 +187,7 @@
         function keyDownHandler(e) {
             // console.log("keyCode: " + e.keyCode );
             // e = e || window.event;
-            setTimeout(function(){ console.log("Hello"); }, 1000);
-            // light cycle 1
+            
             if (e.keyCode === 38) { // up arrow
                 lightCycle1_vx = 0;
                 lightCycle1_vy = -1;
@@ -316,10 +314,16 @@
             C2.fillRect( x0+lightCycle2_x*cellSize, y0+lightCycle2_y*cellSize, cellSize, cellSize );
         
             if(endGame){
-                clearInterval(refreshIntervalId);
                 endGame = false;
-                refreshIntervalId = null;
                 gameNumber++;
+                clearInterval(refreshIntervalId);
+                refreshIntervalId = null;
+                if(lightCycle1_alive){
+                    player1Points++;
+                }
+                else {
+                    player2Points++;
+                }
                 //ici dans le onclick recommencer
                 //addToDom("gameMenu", '<button id="resetButton" onclick="restartGame()" >Restart</button>');
 
@@ -333,8 +337,7 @@
         var gamePaused = false;
 
         //Pour continuer le jeu 
-        document.getElementById('continueButton').onclick = function continueButtonHandler(){
-            startInterval();
+        document.getElementById('continueButton').onclick = function continueButtonHandler() {
             /*
             if(gamePaused) {
                 gamePaused = false;
@@ -342,14 +345,15 @@
                  * to-do
                  */
            // }
-            
+            refreshGame(100);
             console.log("DANS le buton continue")
 
         }
         //Pour mettre le jeu sur Pause
         document.getElementById('pauseButton').onclick =  function pauseButtonHandler() {
 
-            clearInterval(refreshIntervalId);
+            // clearInterval(refreshIntervalId);
+            clearTimeout(refreshIntervalId);
 
             console.log("DANS le buton pause");
         }
@@ -367,9 +371,9 @@
                 
             }*/
         }
-        setTimeout(function(){ console.log("Hello"); }, 3000);
+      
 
-     
+        
         
         var advance = function() {
         
@@ -383,7 +387,7 @@
                 // Check for collision with grid boundaries and with trail
                 if (
                     new1_x < 0 || new1_x >= NUM_CELLS_HORIZONTAL || new1_y < 0 || new1_y >= NUM_CELLS_VERTICAL
-                    || grid[new1_x][new1_y] === CELL_OCCUPIED1 || grid[new2_x][new2_y] === CELL_OCCUPIED2
+                    || grid[new1_x][new1_y] === CELL_OCCUPIED1
                 ) {
                     lightCycle1_alive = false;
                     endGame = true;
@@ -396,6 +400,7 @@
 
                 ) {
                     lightCycle2_alive = false
+                    endGame = true;
                     console.log("2"+lightCycle2_alive);
         
                 }
@@ -415,20 +420,25 @@
                 redraw();
                 
             }
-        }
-
-        
+        }      
 
          
       function startInterval(){  
-        refreshIntervalId = setInterval( function() { 
+            refreshIntervalId = setInterval( function() { 
             advance();
             console.log("running")
-        }, time );
+        }, 100 );
       }
 
-      startInterval();
-    }
+      // Refresh/advance game
+      function refreshGame(refreshRate) {
+        // To run the passed function every 100 milliseconds:
+        setTimeout(function run() {
+            advance();
+            refreshIntervalId = setTimeout(function() { run(); }, refreshRate);
+        }, 100);
+      }
+}
 
     
 
