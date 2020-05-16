@@ -408,7 +408,7 @@
                 else if (
                     new2_x < 0 || new2_x >= NUM_CELLS_HORIZONTAL
                     || new2_y < 0 || new2_y >= NUM_CELLS_VERTICAL
-                    || grid[new2_x][new2_y] === CELL_OCCUPIED
+                    || grid[new2_x][new2_y] === CELL_OCCUPIED2
                 ) {
                     lightCycle2_alive = false
                     endGame = true;
@@ -418,9 +418,9 @@
         
                 else {
                     //Position occuper moto 1
-                    grid[new1_x][new1_y] = CELL_OCCUPIED;
+                    grid[new1_x][new1_y] = CELL_OCCUPIED1;
                     //Position occuper moto 2
-                    grid[new2_x][new2_y] = CELL_OCCUPIED;
+                    grid[new2_x][new2_y] = CELL_OCCUPIED2;
                     //Nouvelle position moto 1
                     lightCycle1_x = new1_x;
                     lightCycle1_y = new1_y;
