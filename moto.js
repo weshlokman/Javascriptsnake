@@ -168,8 +168,6 @@
         
         var grid = create2DArray( NUM_CELLS_HORIZONTAL, NUM_CELLS_VERTICAL );
         var CELL_EMPTY = 0;
-        
-        var CELL_OCCUPIED = 1;
         var CELL_OCCUPIED1 = 1;
         var CELL_OCCUPIED2 = 2;
 
@@ -188,6 +186,7 @@
         var lightCycle2_vx = 0; // positive for right
         var lightCycle2_vy = 1; // positive for down
         var lightCycle2_alive = true;
+        var lightCyle2_pointer
 
         grid[lightCycle1_x][lightCycle1_y] = CELL_OCCUPIED1; // to mark the initial grid cell as occupied
         grid[lightCycle2_x][lightCycle2_y] = CELL_OCCUPIED2; // to mark the initial grid cell as occupied
@@ -312,61 +311,47 @@
                 refreshIntervalId = null;
                 if(lightCycle1_alive){
                     player1Points++;
-                }
-                else {
+                
+                } else if (lightCycle2_alive) {
                     player2Points++;
-                }
+                
+                } else if (!lightCycle1_alive && !lightCycle2_alive) {
+                    //à modifier pour la structure du pointage
+                    player1Points++;
+                    player2Points++;
+
+                } 
             }
         }
 
         var redraw = function() {
-            //mouseControl();
-
-
-            
-      
+         
             C.fillStyle = "#000000";
             C.fillRect(0,0,canvas.width,canvas.height);
         
             for ( var i = 0; i < NUM_CELLS_HORIZONTAL; ++i ) {
                 for ( var j = 0; j < NUM_CELLS_VERTICAL; ++j ) {
 
-
-                    if(grid[i][j] !== CELL_EMPTY) {
-
                         if ( grid[i][j] === CELL_OCCUPIED1 ){
-                            console.log("le grid "+grid[i][j]);
+                            //console.log("le grid "+grid[i][j]);
                             C1.fillStyle = tail1Color ;
                             C1.fillRect( x0+i*cellSize+1, y0+j*cellSize+1, cellSize-2, cellSize-2 );
+                            
                         }
                         else if ( grid[i][j] === CELL_OCCUPIED2 ){
-                                console.log("le grid "+grid[i][j]);
+                              //  console.log("le grid "+grid[i][j]);
                                 C2.fillStyle = tail2Color;
                                 C2.fillRect( x0+i*cellSize+1, y0+j*cellSize+1, cellSize-2, cellSize-2 );
                         }
 
-                    }
-
-
-
-                    if ( grid[i][j] === CELL_OCCUPIED1 ){
-                        console.log("le grid "+grid[i][j]);
-                        C1.fillStyle = tail1Color ;
-                        C1.fillRect( x0+i*cellSize+1, y0+j*cellSize+1, cellSize-2, cellSize-2 );
-                    }
-                    else if ( grid[i][j] === CELL_OCCUPIED2 ){
-                            console.log("le grid "+grid[i][j]);
-                            C2.fillStyle = tail2Color;
-                            C2.fillRect( x0+i*cellSize+1, y0+j*cellSize+1, cellSize-2, cellSize-2 );
-                    }
                     
             }
             C1.fillStyle = lightCycle1_alive ? "#ff0000" : "#FFFFFF";
             C1.fillRect( x0+lightCycle1_x*cellSize, y0+lightCycle1_y*cellSize, cellSize, cellSize );
-            C2.fillStyle = lightCycle2_alive ? "#ff0000" : "#FFFFFF";
+            C2.fillStyle = lightCycle2_alive ? "#32f207" : "#FFFFFF";
             C2.fillRect( x0+lightCycle2_x*cellSize, y0+lightCycle2_y*cellSize, cellSize, cellSize );
         
-            
+            c2.fillRect()
         
          } 
         }  
@@ -405,14 +390,20 @@
 
                 var new1_x = lightCycle1_x + lightCycle1_vx;
                 var new1_y = lightCycle1_y + lightCycle1_vy;
+
+            
         
                 var new2_x = lightCycle2_x + lightCycle2_vx;
                 var new2_y = lightCycle2_y + lightCycle2_vy;
         
+                
+
                 // Check for collision with grid boundaries and with trail
                 if ( new1_x < 0 || new1_x >= NUM_CELLS_HORIZONTAL 
                     || new1_y < 0 || new1_y >= NUM_CELLS_VERTICAL
-                    || grid[new1_x][new1_y] || grid[new2_x][new2_y] === CELL_OCCUPIED1 && CELL_OCCUPIED2 ) {
+                    || grid[new1_x][new1_y] === CELL_OCCUPIED1 || grid[new1_x][new1_y] === CELL_OCCUPIED2 ) {
+                    
+                    //console.log(CELL_OCCUPIED2 && CELL_OCCUPIED1+ "cell occu");
                     lightCycle1_alive = false;
                     endGame = true;
                     console.log("joueur 1 à perdu");
@@ -421,7 +412,9 @@
                 else if (
                     new2_x < 0 || new2_x >= NUM_CELLS_HORIZONTAL
                     || new2_y < 0 || new2_y >= NUM_CELLS_VERTICAL
-                    || grid[new2_x][new2_y] || grid[new1_x][new1_y]=== CELL_OCCUPIED2 && CELL_OCCUPIED1 ) {
+                    || grid[new2_x][new2_y] === CELL_OCCUPIED1 || grid[new2_x][new2_y] === CELL_OCCUPIED2  ) {
+
+                    console.log(CELL_OCCUPIED2 && CELL_OCCUPIED1+ "cell occu");
                     lightCycle2_alive = false
                     endGame = true;
                     console.log("Joueur 2 à perdu");
@@ -453,6 +446,7 @@
             
         
         }
+        
           
 
          
