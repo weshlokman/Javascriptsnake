@@ -351,7 +351,7 @@
             C2.fillStyle = lightCycle2_alive ? "#32f207" : "#FFFFFF";
             C2.fillRect( x0+lightCycle2_x*cellSize, y0+lightCycle2_y*cellSize, cellSize, cellSize );
         
-            c2.fillRect()
+           
         
          } 
         }  
@@ -417,7 +417,7 @@
                     console.log(CELL_OCCUPIED2 && CELL_OCCUPIED1+ "cell occu");
                     lightCycle2_alive = false
                     endGame = true;
-                    console.log("Joueur 2 à perdu");
+                    //console.log("Joueur 2 à perdu");
         
                 } /**else if () {
 

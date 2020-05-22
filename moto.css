@@ -47,9 +47,9 @@ header {
  }
  
  #myCanvas {
-    display: inline;
+    display: inline-block;
  }
- p,
+ 
 label {
     
     font: 1rem 'Fira Sans', sans-serif;
