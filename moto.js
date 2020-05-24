@@ -19,6 +19,7 @@
     var gameNumber = 0;
     var player1Points = 0;
     var player2Points = 0;
+    var stopTime = false;
 
 
     //input color setup
@@ -101,9 +102,11 @@
     
     //recommence le game et elle hide le button restart
     function restartGame(){
+        debugger
             clearInterval(refreshIntervalId);
             refreshRate = 100;
             endGame = false;
+            stopTime = false;
             game();
     }
     
@@ -203,15 +206,18 @@
             else if (e.keyCode === 39) { // right arrow
                 lightCycle1_vy = 0;
                 lightCycle1_vx = 1;
+
+                lightCycle2_vy = 0;
+                lightCycle2_vx = 1;
             }
             //light cycle 2
             else if (e.keyCode === 87) { // w key
                 lightCycle2_vx = 0;
-                lightCycle2_vy = 1;
+                lightCycle2_vy = -1;
             }
             else if (e.keyCode === 83) { // S  key
                 lightCycle2_vx = 0;
-                lightCycle2_vy = -1;
+                lightCycle2_vy = 1;
             }
             else if (e.keyCode === 68) { // D key
                 lightCycle2_vy = 0;
@@ -296,20 +302,23 @@
             if(endGame){
                 endGame = false;
                 gameNumber++;
-                clearInterval(refreshIntervalId);
-                refreshIntervalId = null;
-                if(lightCycle1_alive){
-                    player1Points++;
-                
-                } else if (lightCycle2_alive) {
-                    player2Points++;
-                
-                } else if (!lightCycle1_alive && !lightCycle2_alive) {
-                    //à modifier pour la structure du pointage
+                clearTimeout(refreshIntervalId);
+                stopTime = true;
+                if(!lightCycle1_alive && !lightCycle2_alive){
                     player1Points++;
                     player2Points++;
-
-                } 
+                
+                }
+                else {
+                    if(lightCycle1_alive){
+                       player1Points++;
+                    }
+                    else{
+                       player2Points++
+                    }   
+                }
+  
+                
             }
         }
 
@@ -340,7 +349,7 @@
             C2.fillStyle = lightCycle2_alive ? "#32f207" : "#FFFFFF";
             C2.fillRect( x0+lightCycle2_x*cellSize, y0+lightCycle2_y*cellSize, cellSize, cellSize );
         
-           
+            
         
          } 
         }  
@@ -394,29 +403,38 @@
                     
                     //console.log(CELL_OCCUPIED2 && CELL_OCCUPIED1+ "cell occu");
                     lightCycle1_alive = false;
-                    endGame = true;
+                
                     console.log("joueur 1 à perdu");
+                    if(!lightCycle1_alive){
+                        console.log("player dead");
+                    }
+                    debugger;
+                    
                 }
                 
-                else if (
+                if (
                     new2_x < 0 || new2_x >= NUM_CELLS_HORIZONTAL
                     || new2_y < 0 || new2_y >= NUM_CELLS_VERTICAL
                     || grid[new2_x][new2_y] === CELL_OCCUPIED1 || grid[new2_x][new2_y] === CELL_OCCUPIED2  ) {
 
                     console.log(CELL_OCCUPIED2 && CELL_OCCUPIED1+ "cell occu");
                     lightCycle2_alive = false
+
+                    console.log("Joueur 2 à perdu");
+                    debugger;
+                    
+                } 
+                if (!lightCycle1_alive && !lightCycle2_alive) {
+                    console.log("match nulle ");
                     endGame = true;
-                    //console.log("Joueur 2 à perdu");
-        
-                } /**else if () {
+                    gamefinish();
+                }
+                else if (!lightCycle1_alive || !lightCycle2_alive){
+                    endGame = true;
+                    gamefinish();
 
-                        lightCycle1_alive = false;
-                        lightCycle2_alive = false
-
-                        console.log("match nulle ");
-
-
-                }*/ else {
+                }
+                else {
                     //Position occuper moto 1
                     grid[new1_x][new1_y] = CELL_OCCUPIED1;
                     //Position occuper moto 2
@@ -428,31 +446,36 @@
                     lightCycle2_x = new2_x;
                     lightCycle2_y = new2_y;
                 }
-                gamefinish();
+
+                
+
+                console.log(lightCycle1_alive + " " + lightCycle2_alive);
+                console.log(x0+lightCycle2_x*cellSize, y0+lightCycle2_y*cellSize);
+                console.log(x0+lightCycle1_x*cellSize, y0+lightCycle1_y*cellSize);
+                
                 redraw();
                 
             }  
             
         
         }
+
+      function tieMatch(){
+
+      }  
         
-          
-
-         
-      function startInterval(){  
-            refreshIntervalId = setInterval( function() { 
-            advance();
-            console.log("running")
-        }, 100 );
-      }
-
+        
       // Refresh/advance game
       function refreshGame() {
         // To run the passed function every 100 milliseconds:
-        setTimeout(function run() {
-            advance();
-            refreshIntervalId = setTimeout(function() { run(); }, refreshRate);
-        }, 100);
+        var timeOut =  setTimeout(function run() {
+                advance();
+                console.log("running");
+                if(stopTime){
+                    return;
+                }
+                refreshIntervalId = setTimeout(function() { run(); }, refreshRate);
+            }, 100);
       }
 
 
