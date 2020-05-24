@@ -85,21 +85,10 @@
         refreshRate -= 5;
     }
 
+
     
 
-            //fonction qui permet de hide un element et elle permet aussi de le rendre clear
-    // ***domElement : element du Dome quon veut hide
-    // ***HideOrclear : on veut le hide = true on ne veut pas = false
-    //src w3schools.com/howto/howto_js_toggle_hide_show.asp
-    function hideOrClearElement(domElement, HideOrClear){
-        var elem = document.getElementById(domElement);
-        if (HideOrClear) {
-            elem.style.display = "none";
-        }
-        else {
-          elem.style.display = "block";
-        }
-    }
+   
 
     function updateFirst(event){
         if(event.target.id === "inputColor1"){
@@ -194,7 +183,7 @@
         var endGame = false;
         
         
-        
+        //Contrôle du joueur avec les touches du clavier
         function keyDownHandler(e) {
             // console.log("keyCode: " + e.keyCode );
             // e = e || window.event;
@@ -301,7 +290,7 @@
         }
     
 
-
+        //Gère la partie une fois quel est terminé 
         function gamefinish() {
 
             if(endGame){
