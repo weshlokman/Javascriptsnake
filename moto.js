@@ -17,6 +17,21 @@
 
     //game result
     var gameNumber = 0;
+    var player1Points = 0;
+    var player2Points = 0;
+    var stopTime = false;
+
+
+    //input color setup
+    function startup(){
+        color1Input = document.getElementById("inputColor1");
+        color2Input = document.getElementById("inputColor2");
+        tail1Color = defaultColor;
+        tail2Color = defaultColor;
+        color1Input.addEventListener("change", updateFirst, false);
+        color2Input.addEventListener("change", updateFirst, false);
+    }
+    setUpGame();
     
 
     //fonction qui permet de hide un element et elle permet aussi de le rendre clear
@@ -85,7 +100,7 @@
     
     //recommence le game et elle hide le button restart
     function restartGame(){
-        debugger
+        
             clearInterval(refreshIntervalId);
             refreshRate = 100;
             endGame = false;
@@ -196,11 +211,11 @@
             //light cycle 2
             else if (e.keyCode === 87) { // w key
                 lightCycle2_vx = 0;
-                lightCycle2_vy = -1;
+                lightCycle2_vy = 1;
             }
             else if (e.keyCode === 83) { // S  key
                 lightCycle2_vx = 0;
-                lightCycle2_vy = 1;
+                lightCycle2_vy = -1;
             }
             else if (e.keyCode === 68) { // D key
                 lightCycle2_vy = 0;
@@ -287,19 +302,22 @@
                 gameNumber++;
                 clearTimeout(refreshIntervalId);
                 stopTime = true;
-                if(!lightCycle1_alive && !lightCycle2_alive){
-                    player1Points++;
-                    player2Points++;
-                
-                }
-                else {
-                    if(lightCycle1_alive){
-                       player1Points++;
-                    }
-                    else{
-                       player2Points++
-                    }   
-                }
+                if(!lightCycle1_alive && !lightCycle2_alive) {
+                    
+                    //Si match nulle aucun point pour personne
+                    alert("Match Nul!!!");
+
+                } else {
+
+                        if(lightCycle1_alive){
+                            alert("Joueur 1 a gagné!!!");
+                            player1Points++;
+                        }
+                        else{
+                            alert("Joueur 2 a gagné!!!");
+                            player2Points++;
+                        }
+            }
   
                 
             }
@@ -337,8 +355,6 @@
          } 
         }  
 
-        //Pour contrôler l'état du jeu
-        var gamePaused = false;
 
         //Pour continuer le jeu 
         document.getElementById('continueButton').onclick = function continueButtonHandler() {
@@ -385,13 +401,6 @@
                     || grid[new1_x][new1_y] === CELL_OCCUPIED1 || grid[new1_x][new1_y] === CELL_OCCUPIED2 ) {
                     
                     lightCycle1_alive = false;
-                
-                    alert("Joueur 1 à perdu");
-
-                    if(!lightCycle1_alive){
-                        console.log("player dead");
-                    }
-                    
                 }
                 
                 if (new2_x < 0 || new2_x >= NUM_CELLS_HORIZONTAL
@@ -399,18 +408,19 @@
                     || grid[new2_x][new2_y] === CELL_OCCUPIED1 || grid[new2_x][new2_y] === CELL_OCCUPIED2 ) {
 
                     lightCycle2_alive = false
-                    alert("Joueur 2 à perdu");
-                    
                 } 
                 if (!lightCycle1_alive && !lightCycle2_alive) {
-                    alert("Match nulle");
                     endGame = true;
-                    gamefinish();
-                }
-                else if (!lightCycle1_alive || !lightCycle2_alive){
-                    endGame = true;
+
                     gamefinish();
 
+                }
+
+                
+                else if (!lightCycle1_alive || !lightCycle2_alive){
+                    console.log("lightCycle1State : " + lightCycle1_alive + " lightCycle2State : " + lightCycle2_alive);
+                    endGame = true;
+                    gamefinish();
                 }
                 else {
                     //Position occuper moto 1
@@ -426,11 +436,6 @@
                 }
 
                 
-
-                console.log(lightCycle1_alive + " " + lightCycle2_alive);
-                console.log(x0+lightCycle2_x*cellSize, y0+lightCycle2_y*cellSize);
-                console.log(x0+lightCycle1_x*cellSize, y0+lightCycle1_y*cellSize);
-                
                 redraw();
                 
             }  
@@ -438,9 +443,11 @@
         
         }
 
-      function tieMatch(){
+      
 
-      }  
+
+
+      
         
         
       // Refresh/advance game
