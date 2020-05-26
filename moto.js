@@ -10,30 +10,16 @@
     //time
     var refreshIntervalId;
     //time for the speed
-    var time =100;
+    var time = 100;
     //refresh rate
     var refreshRate = 100;
 
 
     //game result
     var gameNumber = 0;
-    var player1Points = 0;
-    var player2Points = 0;
-    var stopTime = false;
+    
 
-
-    //input color setup
-    function startup(){
-        color1Input = document.getElementById("inputColor1");
-        color2Input = document.getElementById("inputColor2");
-        tail1Color = defaultColor;
-        tail2Color = defaultColor;
-        color1Input.addEventListener("change", updateFirst, false);
-        color2Input.addEventListener("change", updateFirst, false);
-    }
-    setUpGame();
-
-            //fonction qui permet de hide un element et elle permet aussi de le rendre clear
+    //fonction qui permet de hide un element et elle permet aussi de le rendre clear
     // ***domElement : element du Dome quon veut hide
     // ***HideOrclear : on veut le hide = true on ne veut pas = false
     //src w3schools.com/howto/howto_js_toggle_hide_show.asp
@@ -47,7 +33,7 @@
         }
     }
 
-            //fonction qui ajoute au Dom des éléments
+     //fonction qui ajoute au Dom des éléments
     // ***elementid : le id de l'element du dom
     // ***element qu'on veux ajouter au Dom exemple : '<button id="resetButton" onclick="restartGame()">Restart</button>'
     function addToDom(elementId, domElement ){
@@ -87,9 +73,6 @@
     }
 
 
-    
-
-   
 
     function updateFirst(event){
         if(event.target.id === "inputColor1"){
@@ -346,7 +329,7 @@
             }
             C1.fillStyle = lightCycle1_alive ? "#ff0000" : "#FFFFFF";
             C1.fillRect( x0+lightCycle1_x*cellSize, y0+lightCycle1_y*cellSize, cellSize, cellSize );
-            C2.fillStyle = lightCycle2_alive ? "#32f207" : "#FFFFFF";
+            C2.fillStyle = lightCycle2_alive ? "#ff0000" : "#FFFFFF";
             C2.fillRect( x0+lightCycle2_x*cellSize, y0+lightCycle2_y*cellSize, cellSize, cellSize );
         
             
@@ -381,7 +364,7 @@
         }
       
 
-
+        //Fonction pour faire avancer les motos
         var advance = function() {
         
             if ( lightCycle1_alive && lightCycle2_alive) {
@@ -401,31 +384,26 @@
                     || new1_y < 0 || new1_y >= NUM_CELLS_VERTICAL
                     || grid[new1_x][new1_y] === CELL_OCCUPIED1 || grid[new1_x][new1_y] === CELL_OCCUPIED2 ) {
                     
-                    //console.log(CELL_OCCUPIED2 && CELL_OCCUPIED1+ "cell occu");
                     lightCycle1_alive = false;
                 
-                    console.log("joueur 1 à perdu");
+                    alert("Joueur 1 à perdu");
+
                     if(!lightCycle1_alive){
                         console.log("player dead");
                     }
-                    debugger;
                     
                 }
                 
-                if (
-                    new2_x < 0 || new2_x >= NUM_CELLS_HORIZONTAL
+                if (new2_x < 0 || new2_x >= NUM_CELLS_HORIZONTAL
                     || new2_y < 0 || new2_y >= NUM_CELLS_VERTICAL
-                    || grid[new2_x][new2_y] === CELL_OCCUPIED1 || grid[new2_x][new2_y] === CELL_OCCUPIED2  ) {
+                    || grid[new2_x][new2_y] === CELL_OCCUPIED1 || grid[new2_x][new2_y] === CELL_OCCUPIED2 ) {
 
-                    console.log(CELL_OCCUPIED2 && CELL_OCCUPIED1+ "cell occu");
                     lightCycle2_alive = false
-
-                    console.log("Joueur 2 à perdu");
-                    debugger;
+                    alert("Joueur 2 à perdu");
                     
                 } 
                 if (!lightCycle1_alive && !lightCycle2_alive) {
-                    console.log("match nulle ");
+                    alert("Match nulle");
                     endGame = true;
                     gamefinish();
                 }
